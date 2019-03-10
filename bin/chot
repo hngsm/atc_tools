@@ -7,8 +7,8 @@ TEST_INPUTS=$(ls in*.txt)
 function atc_test() {
 	for f in ${TEST_INPUTS}; do
 		echo ------test.sh $f-----
-		echo "cat $f | $*"
-		diff <(cat $f | $1 $2 | tr -d '\r') \
+		echo "cat $f | tr -d '\r' | $*"
+		diff <(cat $f | tr -d '\r' | $1 $2 | tr -d '\r') \
 			<(cat $(echo $f | sed -e 's/in/out/') | tr -d '\r')
 		if [ $? -eq 0 ]; then
 			echo "OK"
