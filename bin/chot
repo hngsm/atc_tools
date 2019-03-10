@@ -23,9 +23,11 @@ if [ $# -lt 2 ]; then
 	echo "    ocaml"
 	echo "    perl"
 	echo "    scheme"
+	echo "    fsharp"
 	echo "    go"
 	echo "    py3"
 	echo "    gnuc"
+	echo "    bash"
 	exit 1
 fi
 
@@ -42,4 +44,5 @@ go) go build -o ./a.out $s \
 py3) atc_test python3 $2;;
 gnuc) gcc -std=gnu11 -O2 -o ./a.out $2 -lm \
 	&& atc_test ./a.out;;
+bash) atc_test bash $2;;
 esac
