@@ -28,6 +28,7 @@ if [ $# -lt 2 ]; then
 	echo "    py3"
 	echo "    gnuc"
 	echo "    bash"
+	echo "    cs"
 	exit 1
 fi
 
@@ -45,4 +46,6 @@ py3) atc_test python3 $2;;
 gnuc) gcc -std=gnu11 -O2 -o ./a.out $2 -lm \
 	&& atc_test ./a.out;;
 bash) atc_test bash $2;;
+cs) mcs -warn:0 -o+ -r:System.Numerics $2 -out:Main.exe \
+	&& atc_test mono Main.exe;;
 esac
