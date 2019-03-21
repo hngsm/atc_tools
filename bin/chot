@@ -40,7 +40,7 @@ perl) atc_test perl $2 ;;
 scheme) atc_test gosh $2 ;;
 fsharp) fsharpc $2 \
 		&& atc_test mono $(echo $2 | sed -e 's/fs/exe/');;
-go) go build -o ./a.out $s \
+go) go build -o ./a.out $2 \
 	&& atc_test ./a.out;;
 py3) atc_test python3 $2;;
 gnuc) gcc -std=gnu11 -O2 -o ./a.out $2 -lm \
