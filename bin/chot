@@ -29,6 +29,8 @@ if [ $# -lt 2 ]; then
 	echo "    gnuc"
 	echo "    bash"
 	echo "    cs"
+	echo "    ruby"
+	echo "    luajit"
 	exit 1
 fi
 
@@ -48,4 +50,6 @@ gnuc) gcc -std=gnu11 -O2 -o ./a.out $2 -lm \
 bash) atc_test bash $2;;
 cs) mcs -warn:0 -o+ -r:System.Numerics $2 -out:Main.exe \
 	&& atc_test mono Main.exe;;
+ruby) atc_test ruby $2;;
+luajit) atc_test luajit $2;;
 esac
