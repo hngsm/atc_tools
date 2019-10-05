@@ -31,6 +31,8 @@ if [ $# -lt 2 ]; then
 	echo "    cs"
 	echo "    ruby"
 	echo "    luajit"
+	echo "    pwsh"
+	echo "    sysvl"
 	exit 1
 fi
 
@@ -52,4 +54,7 @@ cs) mcs -warn:0 -o+ -r:System.Numerics $2 -out:Main.exe \
 	&& atc_test mono Main.exe;;
 ruby) atc_test ruby $2;;
 luajit) atc_test luajit $2;;
+pwsh) atc_test pwsh $2;;
+sysvl) iverilog -g2012 -o ./a.out $2 \
+	&& atc_test ./a.out;;
 esac
