@@ -10,7 +10,8 @@ sub getclip {
     eval "use Win32::Clipboard; 1";
     if ($@) {
         # Mac users should use pbpaste
-        `pclip.exe` or die "Died: $!";
+        #`pclip.exe` or die "Died: $!";
+        `powershell.exe -command get-clipboard` or die "Died: $!";
     } else {
         my $CLIP = Win32::Clipboard();
         $CLIP->Get();
