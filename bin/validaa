@@ -12,7 +12,7 @@ import shlex, subprocess
 #    __EOF__\n
 #    ...
 #    __EOF__\n
-# command_correct = "lua5.3 greedy.lua"
+# command_correct = "lua5.3 naive.lua"
 # command_undertest = "lua5.3 a.lua"
 
 def exec_getstdout(command: str) -> List[str]:
@@ -57,6 +57,6 @@ if __name__ == "__main__":
         print("validaa 'command_geninputs' 'command_correct' 'command_undertest'")
         print()
         print("Example:")
-        print("    validaa 'lua5.3 geninputs.lua' 'lua5.3 greedy.lua' 'lua5.3 a.lua'")
+        print("    validaa 'lua5.3 geninputs.lua' 'lua5.3 naive.lua' 'lua5.3 a.lua'")
     else:
         main(a1, a2, a3)
