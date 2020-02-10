@@ -1,0 +1,64 @@
+#!/usr/bin/env python3
+
+from typing import List, Set, Dict, Tuple, Optional
+import sys
+import shlex, subprocess
+
+# command_geninputs = "lua5.3 geninputs.lua"
+# command_geninputs generates:
+#    case1_input\n
+#    __EOF__\n
+#    case2_input\n
+#    __EOF__\n
+#    ...
+#    __EOF__\n
+# command_judge = "lua5.3 judge.lua"
+#    get INPUT + OUTPUT
+#    exit code ==0: OK, !=0: NG
+# command_undertest = "lua5.3 a.lua"
+
+def exec_getstdout(command: str) -> List[str]:
+    args = shlex.split(command)
+    with subprocess.Popen(args, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE) as p:
+        (stdouts_bytearray, _) = p.communicate()
+        stdouts_str = stdouts_bytearray.decode()
+        stdouts_list = stdouts_str.split("__EOF__\n")
+        return stdouts_list[:-1] # last element is empty
+
+def exec_putstdin_getstdout(command: str, text_to_stdin: str) -> Tuple[List[str], int]:
+    args = shlex.split(command)
+    with subprocess.Popen(args, stdin=subprocess.PIPE, stdout=subprocess.PIPE) as p:
+        (stdouts_bytearray, _) = p.communicate(text_to_stdin.encode())
+        return stdouts_bytearray.decode(), p.returncode
+
+def main(command_geninputs, command_judge, command_undertest):
+    inputs = exec_getstdout(command_geninputs)
+    oks = 0
+    ngs = 0
+    try:
+        for text in inputs:
+            output_actual, _ = exec_putstdin_getstdout(command_undertest, text)
+            output_expect, retcode = exec_putstdin_getstdout(command_judge, text + output_actual)
+            if retcode == 0:
+                print("OK on IN = ", repr(text))
+                oks += 1
+            else:
+                print("NG!!!! on IN = ", repr(text))
+                print("error = ", repr(output_expect))
+                print("actual = ", repr(output_actual))
+                ngs += 1
+    finally:
+        print()
+        print("OK count:", oks)
+        print("NG count:", ngs)
+
+if __name__ == "__main__":
+    try:
+        a1, a2, a3 = sys.argv[1], sys.argv[2], sys.argv[3]
+    except IndexError:
+        print("validaa_b 'command_geninputs' 'command_judge' 'command_undertest'")
+        print()
+        print("Example:")
+        print("    valida_b 'lua5.3 geninputs.lua' 'lua5.3 judge.lua' 'lua5.3 a.lua'")
+    else:
+        main(a1, a2, a3)
